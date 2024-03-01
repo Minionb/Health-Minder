@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapd722_project_group6/AddPatientScreen.dart';
 import 'package:mapd722_project_group6/Patient.dart';
 import 'package:mapd722_project_group6/PatientList.dart';
 
@@ -52,6 +53,7 @@ late Future<List<Patient>> patients;
             }
           },
         ),
+        '/AddPatient' : (context) => AddPatient()
       },
     );
   }
