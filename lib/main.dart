@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapd722_project_group6/Patient.dart';
 import 'package:mapd722_project_group6/PatientList.dart';
 
 void main() {
@@ -16,9 +17,21 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
 
+late Future<List<Patient>> patients;
+
+  @override
+  void initState() {
+    super.initState();
+    patients = fetchPatients();
+  }
+
+  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print("hi");
+    print(patients);
     return MaterialApp(
       title: 'Health Minder',
       theme: ThemeData(
@@ -27,8 +40,19 @@ class MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       routes: {
-        '/': (context) => PatientList(),
-      }
+        '/': (context) => FutureBuilder<List<Patient>>(
+          future: patients,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return PatientList(snapshot.data ?? []);
+            }
+          },
+        ),
+      },
     );
   }
 }
