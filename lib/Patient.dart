@@ -90,3 +90,33 @@ Future<Patient> fetchPatientById(String id) async {
   }
 }
 
+
+
+Future<void> createPatient(String firstName, String lastName, String address, DateTime dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
+  var url = Uri.parse('http://127.0.0.1:3000/patients');
+  //var headers = {'Content-Type': 'application/json'};
+  //var body = newPatient;
+
+  var response = await http.post(url, 
+    body: {
+      'firstName': firstName,
+      'lastName': lastName,
+      'address': address,
+      'dateOfBirth': dateOfBirth,
+      'gender': gender,
+      'department': department,
+      'doctor': doctor,
+      'additionalNotes': additionalNotes
+    }
+  );
+
+  if (response.statusCode == 200) {
+    // Request successful, parse the response
+    var data = response.body;
+    // Process the data or update your UI accordingly
+    print(data);
+  } else {
+    // Request failed, handle the error
+    print('Request failed with status: ${response.statusCode}');
+  }
+}
