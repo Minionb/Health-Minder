@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/MainDrawer.dart';
 import 'package:mapd722_project_group6/Patient.dart';
+import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 import 'package:mapd722_project_group6/PatientWidget.dart';
 
 class PatientList extends StatelessWidget {
@@ -28,8 +29,14 @@ class PatientList extends StatelessWidget {
               print('Delete clicked');
             },
             onTap: () {
-              // TODO: Implement onTap functionality
-              print('Patient tapped');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PatientDetailWidget(
+                    patientId: patients[index].id,
+                  ),
+                ),
+              );
             },
           );
         },

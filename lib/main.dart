@@ -31,8 +31,7 @@ late Future<List<Patient>> patients;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print("hi");
-    print(patients);
+
     return MaterialApp(
       title: 'Health Minder',
       theme: ThemeData(

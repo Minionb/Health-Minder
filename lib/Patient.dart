@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Patient {
   final String id;
   final String firstName;
   final String lastName;
   final String address;
-  final DateTime dateOfBirth;
+  final DateTime? dateOfBirth;
   final String gender;
   final String department;
   final String doctor;
@@ -42,6 +43,29 @@ class Patient {
       condition: json["condition"],
     )).toList();
   }
+
+    factory Patient.fromJson(Map<String, dynamic> json) {
+    return Patient(
+      id: json['id'] ?? '',
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+      address: json['address'] ?? '',
+      dateOfBirth: json['date_of_birth'] != null
+            ? DateFormat('yyyy-MM-dd').parse(json['date_of_birth'] as String) : null,
+      gender: json['gender'] ?? '',
+      department: json['department'] ?? '',
+      doctor: json['doctor'] ?? '',
+      additionalNotes: json['additional_notes'] ?? '',
+      condition: json['condition'] ?? '',
+    );
+  }
+
+  String getFormattedDateOfBirth() {
+      if (dateOfBirth != null) {
+        return DateFormat('yyyy-MM-dd').format(dateOfBirth!);
+      }
+      return '';
+  }
 }
 
 Future<List<Patient>> fetchPatients() async {
@@ -53,3 +77,16 @@ Future<List<Patient>> fetchPatients() async {
     throw Exception('Failed to fetch patients');
   }
 }
+
+Future<Patient> fetchPatientById(String id) async {
+  final response = await http.get(Uri.parse('http://127.0.0.1:3000/patients/$id'));
+
+  if (response.statusCode == 200) {
+    final dynamic data = json.decode(response.body);
+    final Patient patient = Patient.fromJson(data);
+    return patient;
+  } else {
+    throw Exception('Failed to fetch patient');
+  }
+}
+
