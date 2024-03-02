@@ -5,7 +5,9 @@ import 'package:mapd722_project_group6/Patient.dart';
 const List<String> genderOpsList = <String>['Male', 'Female', 'Other'];
 
 class AddPatient extends StatefulWidget {
-  const AddPatient({Key? key}) : super(key: key);
+  final VoidCallback reloadList; // Add the reloadList parameter
+
+  const AddPatient({Key? key, required this.reloadList}) : super(key: key);
 
   @override
   State<AddPatient> createState() => _AddPatient();
@@ -28,7 +30,7 @@ class _AddPatient extends State<AddPatient> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(1900, 8),
-        lastDate: DateTime(2024));
+        lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -40,7 +42,7 @@ class _AddPatient extends State<AddPatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Health Minder")),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(reloadList: widget.reloadList,),
       body: Padding(padding: EdgeInsets.all(20),
         child: ListView(
           children: [
@@ -105,24 +107,16 @@ class _AddPatient extends State<AddPatient> {
               controller: addNotes,
             ),
             ElevatedButton(onPressed: () => {
-              // newPatient = Patient(
-              //   id: , 
-              //   firstName: nameFirst.toString(), 
-              //   lastName: nameLast.toString(), 
-              //   address: address.toString(), 
-              //   dateOfBirth: selectedDate, 
-              //   gender: gender, 
-              //   department: department.toString(), 
-              //   doctor: doctor.toString(), 
-              //   additionalNotes: addNotes.toString(), 
-              //   condition: ""
-              // ),
+              print("Submit Tapped"),
+              print(nameFirst.text),
+              print(nameLast.text),
+
               if (nameFirst.text != "" && nameLast.text != "" && address.text != "" && gender != "" && department.text != "" && doctor.text != "" && addNotes.text != "") {
                 createPatient(
                   nameFirst.text,
                   nameLast.text,
                   address.text,
-                  selectedDate,
+                  "${selectedDate.toLocal()}".split(' ')[0],
                   gender,
                   department.text,
                   doctor.text,

@@ -3,6 +3,11 @@ import 'package:flutter/widgets.dart';
 
 
 class MainDrawer extends StatelessWidget {
+
+  final VoidCallback reloadList;
+
+  const MainDrawer({required this.reloadList});
+  
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,7 +26,7 @@ class MainDrawer extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('View All Patients'),
             onTap: () {
-              //Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context).pushReplacementNamed('/');
             },
           ),
           ListTile(

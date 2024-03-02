@@ -92,21 +92,21 @@ Future<Patient> fetchPatientById(String id) async {
 
 
 
-Future<void> createPatient(String firstName, String lastName, String address, DateTime dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
+Future<void> createPatient(String firstName, String lastName, String address, String dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
   var url = Uri.parse('http://127.0.0.1:3000/patients');
   //var headers = {'Content-Type': 'application/json'};
   //var body = newPatient;
 
   var response = await http.post(url, 
     body: {
-      'firstName': firstName,
-      'lastName': lastName,
+      'first_name': firstName,
+      'last_name': lastName,
       'address': address,
-      'dateOfBirth': dateOfBirth,
+      'date_of_birth': dateOfBirth,
       'gender': gender,
       'department': department,
       'doctor': doctor,
-      'additionalNotes': additionalNotes
+      'additional_notes': additionalNotes
     }
   );
 
@@ -118,5 +118,6 @@ Future<void> createPatient(String firstName, String lastName, String address, Da
   } else {
     // Request failed, handle the error
     print('Request failed with status: ${response.statusCode}');
+    print(response.body);
   }
 }

@@ -8,13 +8,17 @@ class PatientList extends StatelessWidget {
 
   final List<Patient> patients;
 
-  const PatientList(this.patients, {super.key});
+  final VoidCallback reloadList; // Add the reloadList parameter
+
+  const PatientList(this.patients, {Key? key, required this.reloadList}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Health Minder")),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(reloadList: reloadList,),
       body: ListView.builder(
         itemCount: patients.length,
         itemBuilder: (context, index) {
