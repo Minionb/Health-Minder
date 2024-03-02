@@ -33,7 +33,7 @@ class MainDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.filter),
-            title: const Text('Filter Patients by Conditions'),
+            title: const Text('Filter Patients'),
             onTap: () {
               //Navigator.of(context).pushReplacementNamed('/favorit-screen');
             },
