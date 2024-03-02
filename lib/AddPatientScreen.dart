@@ -5,9 +5,7 @@ import 'package:mapd722_project_group6/Patient.dart';
 const List<String> genderOpsList = <String>['Male', 'Female', 'Other'];
 
 class AddPatient extends StatefulWidget {
-  final VoidCallback reloadList; // Add the reloadList parameter
 
-  const AddPatient({Key? key, required this.reloadList}) : super(key: key);
 
   @override
   State<AddPatient> createState() => _AddPatient();
@@ -42,7 +40,7 @@ class _AddPatient extends State<AddPatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Health Minder")),
-      drawer: MainDrawer(reloadList: widget.reloadList,),
+      drawer: MainDrawer(),
       body: Padding(padding: EdgeInsets.all(20),
         child: ListView(
           children: [
@@ -107,10 +105,6 @@ class _AddPatient extends State<AddPatient> {
               controller: addNotes,
             ),
             ElevatedButton(onPressed: () => {
-              print("Submit Tapped"),
-              print(nameFirst.text),
-              print(nameLast.text),
-
               if (nameFirst.text != "" && nameLast.text != "" && address.text != "" && gender != "" && department.text != "" && doctor.text != "" && addNotes.text != "") {
                 createPatient(
                   nameFirst.text,
@@ -122,9 +116,24 @@ class _AddPatient extends State<AddPatient> {
                   doctor.text,
                   addNotes.text
                 ),
-                Navigator.of(context).pushNamed('/')
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Success'),
+                      content: Text('Patient created successfully.'),
+                      actions: [
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacementNamed('/');
+                          },
+                        ),
+                      ],
+                   );
+                  },
+                )    
               }
-              
             }, child: Text("Submit")),
           ]
         )

@@ -3,11 +3,6 @@ import 'package:flutter/widgets.dart';
 
 
 class MainDrawer extends StatelessWidget {
-
-  final VoidCallback reloadList;
-
-  const MainDrawer({required this.reloadList});
-  
   @override
   Widget build(BuildContext context) {
     return Drawer(

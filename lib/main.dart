@@ -56,22 +56,12 @@ late Future<List<Patient>> patients;
               return Scaffold(
                 body: PatientList(
                   snapshot.data ?? [],
-                  reloadList: () {
-                    setState(() {
-                  patients = fetchPatients();
-            });
-          },
-                  
                 ),
               );
             }
           },
         ),
-        '/AddPatient': (context) => AddPatient(reloadList: () {
-                          setState(() {
-                          patients = fetchPatients();
-                          });
-                      }),
+        '/AddPatient': (context) => AddPatient(),
       },
     );
   }
