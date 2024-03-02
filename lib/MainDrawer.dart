@@ -21,7 +21,7 @@ class MainDrawer extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('View All Patients'),
             onTap: () {
-              //Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context).pushReplacementNamed('/');
             },
           ),
           ListTile(
