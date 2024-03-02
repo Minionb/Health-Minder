@@ -8,7 +8,7 @@ class PatientList extends StatelessWidget {
 
   final List<Patient> patients;
 
-  const PatientList(this.patients, {super.key});
+  const PatientList(this.patients, {Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
