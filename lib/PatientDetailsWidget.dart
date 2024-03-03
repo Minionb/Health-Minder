@@ -14,7 +14,6 @@ class PatientDetailWidget extends StatefulWidget {
 
 class PatientDetailWidgetState extends State<PatientDetailWidget> {
 
-
   late Future<Patient> patient;
     
   @override

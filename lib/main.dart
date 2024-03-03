@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/AddPatientScreen.dart';
+import 'package:mapd722_project_group6/MainDrawer.dart';
 import 'package:mapd722_project_group6/Patient.dart';
 import 'package:mapd722_project_group6/PatientList.dart';
 
@@ -26,35 +27,42 @@ late Future<List<Patient>> patients;
     patients = fetchPatients();
   }
 
+  // Reload the list by fetching the patients again
+  void reloadList() {
+    setState(() {
+      patients = fetchPatients();
+    });
+  }
   
 
   // This widget is the root of your application.
-  @override
+    @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Health Minder',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       routes: {
         '/': (context) => FutureBuilder<List<Patient>>(
-          future: patients,
+          future: fetchPatients(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return PatientList(snapshot.data ?? []);
+              return Scaffold(
+                body: PatientList(
+                  snapshot.data ?? [],
+                ),
+              );
             }
           },
         ),
-        '/AddPatient' : (context) => AddPatient()
+        '/AddPatient': (context) => AddPatient(),
       },
     );
   }
 }
-
