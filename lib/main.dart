@@ -21,17 +21,32 @@ class MyAppState extends State<MyApp> {
 
 late Future<List<Patient>> patients;
 
+
+  Map<String, String> patientQueryParams = {
+      'first_name': '',
+      'last_name': '',
+    };
+
+  void setQueryParams(Map<String, String> params) {
+    setState(() {
+      resetQueryParams(); 
+      patientQueryParams = params;
+    });
+  }
+
+  void resetQueryParams() {
+    setState(() {
+      patientQueryParams = {
+        'first_name': '',
+        'last_name': '',
+      };
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    patients = fetchPatients();
-  }
-
-  // Reload the list by fetching the patients again
-  void reloadList() {
-    setState(() {
-      patients = fetchPatients();
-    });
+    patients = fetchPatients(patientQueryParams);
   }
   
 
@@ -46,16 +61,19 @@ late Future<List<Patient>> patients;
       ),
       routes: {
         '/': (context) => FutureBuilder<List<Patient>>(
-          future: fetchPatients(),
+          future: fetchPatients(patientQueryParams),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
+              // Refresh the patient list with the filter
+              //setQueryParams(patientQueryParams);
               return Scaffold(
                 body: PatientList(
                   snapshot.data ?? [],
+                  setQueryParams,
                 ),
               );
             }

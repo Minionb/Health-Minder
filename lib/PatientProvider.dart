@@ -69,8 +69,11 @@ class Patient {
   }
 }
 
-Future<List<Patient>> fetchPatients() async {
-  final response = await http.get(Uri.parse('http://127.0.0.1:3000/patients'));
+Future<List<Patient>> fetchPatients(Map<String, String> patientQueryParams) async {
+  final url = Uri.parse('http://127.0.0.1:3000/patients')
+      .replace(queryParameters: patientQueryParams);
+
+  final response = await http.get(url);
 
   if (response.statusCode == 200) {
     return Patient.parsePatients(response.body);
