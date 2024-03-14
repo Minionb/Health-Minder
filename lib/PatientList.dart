@@ -6,8 +6,9 @@ import 'package:mapd722_project_group6/PatientWidget.dart';
 
 class PatientList extends StatefulWidget {
   final List<Patient> patients;
+  final Function(Map<String, String>) setQueryParams;
 
-  const PatientList(this.patients, {Key? key}) : super(key: key);
+  const PatientList(this.patients,this.setQueryParams);
 
   @override
   _PatientListState createState() => _PatientListState();
@@ -17,12 +18,13 @@ class _PatientListState extends State<PatientList> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
 
-  @override
-  void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    super.dispose();
-  }
+  String firstName = '';
+  String lastName = '';
+
+  Map<String, String> patientQueryParams = {
+    'first_name': '',
+    'last_name': '',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +54,6 @@ class _PatientListState extends State<PatientList> {
                         border: InputBorder.none,
                         labelText: 'First Name',
                       ),
-                      onChanged: (value) {
-                        // TODO: Implement first name search functionality
-                      },
                     ),
                   ),
                 ),
@@ -67,19 +66,22 @@ class _PatientListState extends State<PatientList> {
                         border: InputBorder.none,
                         labelText: 'Last Name',
                       ),
-                      onChanged: (value) {
-                        // TODO: Implement last name search functionality
-                      },
                     ),
                   ),
                 ),
                 IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
-                    String firstName = firstNameController.text;
-                    String lastName = lastNameController.text;
-                    // TODO: Implement search functionality using firstName and lastName
+                    setState(() {
+                      firstName = firstNameController.text;
+                      lastName = lastNameController.text;
+                      patientQueryParams = {
+                        'first_name': firstName,
+                        'last_name': lastName,
+                      };
+                    });
                     print('Search clicked with firstName: $firstName, lastName: $lastName');
+                    widget.setQueryParams(patientQueryParams);
                   },
                 ),
               ],
