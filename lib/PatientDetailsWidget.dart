@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mapd722_project_group6/ClinicalData.dart';
+import 'package:mapd722_project_group6/ClinicalDataScreen.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
 
 class PatientDetailWidget extends StatefulWidget {
@@ -15,15 +17,21 @@ class PatientDetailWidget extends StatefulWidget {
 class PatientDetailWidgetState extends State<PatientDetailWidget> {
 
   late Future<Patient> patient;
+  late Future<List<ClinicalData>> clinicalData;
     
   @override
   void initState() {
     super.initState();
     fetchPatientData();
+    fetchClinicalData();
   }
 
   void fetchPatientData() {
     patient = fetchPatientById(widget.patientId);
+  }
+
+  void fetchClinicalData() {
+    clinicalData = fetchClinicalDataByPatient(widget.patientId);
   }
 
   @override
@@ -140,12 +148,28 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
                     },
                   ),
                   // Second tab content: Clinical Data
-                  Center(
-                    child: Text(
-                      'Clinical Data',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
+                  FutureBuilder<List<ClinicalData>>(
+                    future: clinicalData, 
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final clinicalDataList = snapshot.data!;
+                        return ClinicalDataScreen(patientId: widget.patientId, clinicalData: clinicalDataList);
+                      }
+                      else if (snapshot.hasError) {
+                        print(snapshot);
+                        return Text('Failed to fetch patient clinical data');
+                      }
+                      else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }
+                  )
+                  // Center(
+                  //   child: Text(
+                  //     'Clinical Data',
+                  //     style: TextStyle(fontSize: 18),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

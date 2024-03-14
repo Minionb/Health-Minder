@@ -4,6 +4,8 @@ import 'package:mapd722_project_group6/PatientProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 import 'package:mapd722_project_group6/PatientWidget.dart';
 
+enum Item { critical, bad, average, fine, good, all }
+
 class PatientList extends StatefulWidget {
   final List<Patient> patients;
   final Function(Map<String, String>) setQueryParams;
@@ -21,9 +23,12 @@ class _PatientListState extends State<PatientList> {
   String firstName = '';
   String lastName = '';
 
+  Item? selectedItem;
+
   Map<String, String> patientQueryParams = {
     'first_name': '',
     'last_name': '',
+    'condition': '',
   };
 
     Future<void> showDeleteConfirmationDialog(String patientId) async {
@@ -110,6 +115,54 @@ class _PatientListState extends State<PatientList> {
                     widget.setQueryParams(patientQueryParams);
                   },
                 ),
+                PopupMenuButton<Item>(
+                  icon: const Icon(Icons.filter_alt, color: Colors.black,),
+                  initialValue: selectedItem,
+                  onSelected: (Item item) {
+                    String itemString = "";
+                    setState(() {
+                      selectedItem = item;
+                      itemString = selectedItem.toString().split('.')[1];
+                      if (item != Item.all) {
+                        patientQueryParams = {
+                          'condition': itemString
+                        };
+                      } else {
+                        patientQueryParams = {
+                          'condition': ''
+                        };
+                      }
+                    });
+                    print('Filter clicked with condition: $itemString');
+                    widget.setQueryParams(patientQueryParams);
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<Item>>[
+                    const PopupMenuItem<Item>(
+                      value: Item.critical,
+                      child: Text('Critical', style: TextStyle(color: Color(0xFF9A1B22))),
+                    ),
+                    const PopupMenuItem<Item>(
+                      value: Item.bad,
+                      child: Text('Bad', style: TextStyle(color: Color(0xFFB94723)),)
+                    ),
+                    const PopupMenuItem<Item>(
+                      value: Item.average,
+                      child: Text('Average', style: TextStyle(color: Color(0xFFF9E802)),)
+                    ),
+                    const PopupMenuItem<Item>(
+                      value: Item.fine,
+                      child: Text('Fine', style: TextStyle(color: Color(0xFF4CC9F0)),)
+                    ),
+                    const PopupMenuItem<Item>(
+                      value: Item.good,
+                      child: Text('Good', style: TextStyle(color: Color(0xFF008000)),)
+                    ),
+                    const PopupMenuItem<Item>(
+                      value: Item.all,
+                      child: Text('All', style: TextStyle(color: Colors.black),)
+                    ),
+                  ]
+                )
               ],
             ),
           ),
