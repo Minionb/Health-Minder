@@ -21,17 +21,15 @@ class MyAppState extends State<MyApp> {
 
 late Future<List<Patient>> patients;
 
+Map<String, String> productQueryParams = {
+    'first_name': '',
+    'last_name': '',
+  };
+
   @override
   void initState() {
     super.initState();
-    patients = fetchPatients();
-  }
-
-  // Reload the list by fetching the patients again
-  void reloadList() {
-    setState(() {
-      patients = fetchPatients();
-    });
+    patients = fetchPatients(productQueryParams);
   }
   
 
@@ -46,7 +44,7 @@ late Future<List<Patient>> patients;
       ),
       routes: {
         '/': (context) => FutureBuilder<List<Patient>>(
-          future: fetchPatients(),
+          future: fetchPatients(productQueryParams),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
