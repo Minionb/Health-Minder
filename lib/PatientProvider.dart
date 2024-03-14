@@ -125,3 +125,14 @@ Future<void> createPatient(String firstName, String lastName, String address, St
     print(response.body);
   }
 }
+
+Future<void> deletePatient(String patientId) async {
+  final url = 'http://127.0.0.1:3000/patients/$patientId';
+  final response = await http.delete(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    print('Patient deleted successfully');
+  } else {
+    throw Exception('Failed to delete patient');
+  }
+}
