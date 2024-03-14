@@ -26,11 +26,38 @@ class _PatientListState extends State<PatientList> {
     'last_name': '',
   };
 
+    Future<void> showDeleteConfirmationDialog(String patientId) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this patient?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                deletePatient(patientId);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Health Minder"),
+        title: const Text("Health Minder"),
       ),
       drawer: MainDrawer(),
       body: Column(
@@ -40,8 +67,8 @@ class _PatientListState extends State<PatientList> {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8),
             ),
-            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             height: 60,
             child: Row(
               children: [
@@ -50,7 +77,7 @@ class _PatientListState extends State<PatientList> {
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: TextField(
                       controller: firstNameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'First Name',
                       ),
@@ -62,7 +89,7 @@ class _PatientListState extends State<PatientList> {
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: TextField(
                       controller: lastNameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Last Name',
                       ),
@@ -80,7 +107,6 @@ class _PatientListState extends State<PatientList> {
                         'last_name': lastName,
                       };
                     });
-                    print('Search clicked with firstName: $firstName, lastName: $lastName');
                     widget.setQueryParams(patientQueryParams);
                   },
                 ),
@@ -98,8 +124,7 @@ class _PatientListState extends State<PatientList> {
                     print('Edit clicked');
                   },
                   onDelete: () {
-                    // TODO: Implement delete functionality
-                    print('Delete clicked');
+                    showDeleteConfirmationDialog(widget.patients[index].id);
                   },
                   onTap: () {
                     Navigator.push(
