@@ -29,19 +29,10 @@ late Future<List<Patient>> patients;
 
   void setQueryParams(Map<String, String> params) {
     setState(() {
-      resetQueryParams(); 
       patientQueryParams = params;
     });
   }
 
-  void resetQueryParams() {
-    setState(() {
-      patientQueryParams = {
-        'first_name': '',
-        'last_name': '',
-      };
-    });
-  }
 
   @override
   void initState() {

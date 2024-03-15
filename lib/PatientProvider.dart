@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class Patient {
+class Patient extends ChangeNotifier {
   final String id;
   final String firstName;
   final String lastName;
