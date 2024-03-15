@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mapd722_project_group6/EditPatientScreen.dart';
 import 'package:mapd722_project_group6/MainDrawer.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
@@ -173,8 +174,14 @@ class _PatientListState extends State<PatientList> {
                 return PatientWidget(
                   patient: widget.patients[index],
                   onEdit: () {
-                    // TODO: Implement edit functionality
-                    print('Edit clicked');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditPatient(
+                          patientID: widget.patients[index].id,
+                        ),
+                      ),
+                    );
                   },
                   onDelete: () {
                     showDeleteConfirmationDialog(widget.patients[index].id);

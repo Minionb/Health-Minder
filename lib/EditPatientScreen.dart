@@ -4,14 +4,17 @@ import 'package:mapd722_project_group6/PatientProvider.dart';
 
 const List<String> genderOpsList = <String>['Male', 'Female', 'Other'];
 
-class AddPatient extends StatefulWidget {
+class EditPatient extends StatefulWidget {
 
+final String patientID;
+
+  EditPatient({required this.patientID});
 
   @override
-  State<AddPatient> createState() => _AddPatient();
+  State<EditPatient> createState() => _EditPatient();
 }
 
-class _AddPatient extends State<AddPatient> {
+class _EditPatient extends State<EditPatient> {
   DateTime selectedDate = DateTime.now();
   final nameFirst = TextEditingController();
   final nameLast = TextEditingController();
@@ -20,8 +23,7 @@ class _AddPatient extends State<AddPatient> {
   final department = TextEditingController();
   final doctor = TextEditingController();
   final addNotes = TextEditingController();
-
-  late Patient newPatient;
+  
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -39,14 +41,22 @@ class _AddPatient extends State<AddPatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Health Minder")),
+        appBar: AppBar(
+        title: Text("Health Minder"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       drawer: MainDrawer(),
       body: Padding(padding: EdgeInsets.all(20),
         child: ListView(
           children: [
             const Center(
               child: Text(
-                "Add Patient",
+                "Edit Patient",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -114,24 +124,61 @@ class _AddPatient extends State<AddPatient> {
             TextField(
               controller: addNotes,
             ),
-            ElevatedButton(onPressed: () => {
-              if (nameFirst.text != "" && nameLast.text != "" && address.text != "" && gender != "" && department.text != "" && doctor.text != "" && addNotes.text != "") {
-                createPatient(
-                  nameFirst.text,
-                  nameLast.text,
-                  address.text,
-                  "${selectedDate.toLocal()}".split(' ')[0],
-                  gender,
-                  department.text,
-                  doctor.text,
-                  addNotes.text
-                ),
+           ElevatedButton(
+            onPressed: () {
+              List<String> updatedFields = [];
+              List<String> updateBody = [];
+              if (nameFirst.text != ""){
+                String nameFirstText = nameFirst.text;
+                updatedFields.add("First Name: $nameFirstText");
+                updateBody.add('"first_name": "$nameFirstText"');
+              }
+              if (nameLast.text != ""){
+                String nameLastText = nameLast.text;
+                updatedFields.add("Last Name: $nameLastText");
+                updateBody.add('"last_name": "$nameLastText"');
+              }
+              if ("${selectedDate.toLocal()}".split(' ')[0] != DateTime.now().toLocal().toString().split(' ')[0]) {
+                String dateOfBirth = "${selectedDate.toLocal()}".split(' ')[0];
+                updatedFields.add("Last Name: $dateOfBirth");
+                updateBody.add('"date_of_birth": "$dateOfBirth"');
+              }
+              if (address.text != ""){
+                String addressText = address.text;
+                updatedFields.add("Address: $addressText");
+                updateBody.add('"address": "$addressText"');
+              }
+              if (gender != ""){
+                updatedFields.add("Gender: $gender");
+                updateBody.add('"gender": "$gender"');
+              }
+              if (department.text != ""){
+                String departmentText = department.text;
+                updatedFields.add("Department: $departmentText");
+                updateBody.add('"department": "$departmentText"');
+              }
+              if (doctor.text != ""){
+                String doctorText = doctor.text;
+                updatedFields.add("Doctor: $doctorText");
+                updateBody.add('"doctor": "$doctorText"');
+              }
+              if (addNotes.text != ""){
+                String addNotesText = addNotes.text;
+                updatedFields.add("Additional Notes: $addNotesText");
+                updateBody.add('"additional_notes": "$addNotesText"');
+              }
+              final updateBodyString = "{${updateBody.join(", ")}}";
+              print(updateBodyString);
+
+              // Call the editPatient function with the updateBodyString
+              editPatient(widget.patientID, updateBodyString);
+
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('Success'),
-                      content: Text('Patient created successfully.'),
+                      content: Text('Patient edtited successfully.'),
                       actions: [
                         TextButton(
                           child: Text('OK'),
@@ -142,9 +189,8 @@ class _AddPatient extends State<AddPatient> {
                       ],
                    );
                   },
-                )    
-              }
-            }, child: Text("Submit")),
+                );    
+              }, child: Text("Submit")),
           ]
         )
       )

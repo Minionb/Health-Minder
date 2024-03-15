@@ -136,3 +136,21 @@ Future<void> deletePatient(String patientId) async {
     throw Exception('Failed to delete patient');
   }
 }
+
+Future<void> editPatient(String patientID, String updateBodyString) async {
+  final url = 'http://127.0.0.1:3000/patients/$patientID';
+  final response = await http.patch(
+    Uri.parse(url),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: updateBodyString,
+  );
+  
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    // Do something with the response data
+  } else {
+    // Handle any errors or failure cases
+  }
+}
