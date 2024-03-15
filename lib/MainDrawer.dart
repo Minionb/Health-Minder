@@ -31,13 +31,6 @@ class MainDrawer extends StatelessWidget {
               Navigator.of(context).pushReplacementNamed('/AddPatient');
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.filter),
-            title: const Text('Filter Patients'),
-            onTap: () {
-              //Navigator.of(context).pushReplacementNamed('/favorit-screen');
-            },
-          ),
         ], 
       ),
     );
