@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/ClinicalData.dart';
+import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
 import 'package:mapd722_project_group6/ClinicalDataScreen.dart';
 import 'package:mapd722_project_group6/Patient.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
+import 'package:provider/provider.dart';
 
 class PatientDetailWidget extends StatefulWidget {
   final String patientId;
@@ -24,16 +26,14 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
   void initState() {
     super.initState();
     fetchPatientData();
-    fetchClinicalData();
+  
   }
 
   void fetchPatientData() {
     patient = fetchPatientById(widget.patientId);
   }
 
-  void fetchClinicalData() {
-    clinicalData = fetchClinicalDataByPatient(widget.patientId);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,21 +148,7 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
                     },
                   ),
                   // Second tab content: Clinical Data
-                  FutureBuilder<List<ClinicalData>>(
-                    future: clinicalData, 
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final clinicalDataList = snapshot.data!;
-                        return ClinicalDataScreen(patientId: widget.patientId, clinicalData: clinicalDataList);
-                      }
-                      else if (snapshot.hasError) {
-                        return const Text('Failed to fetch patient clinical data');
-                      }
-                      else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    }
-                  )
+                  ClinicalDataScreen(patientId: widget.patientId)
                 ],
               ),
             ),

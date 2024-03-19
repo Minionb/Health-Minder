@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/AddPatientScreen.dart';
+import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
 import 'package:mapd722_project_group6/PatientList.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => PatientProvider(),
+runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<PatientProvider>(
+        create: (context) => PatientProvider(),
+      ),
+      
+      ChangeNotifierProvider<ClinicalDataProvider>(
+        create: (context) => ClinicalDataProvider(),
+      ),
+    ],
     child: const MyApp(),
   ));
 }

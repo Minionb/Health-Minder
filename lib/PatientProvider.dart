@@ -5,6 +5,7 @@ import 'package:mapd722_project_group6/Patient.dart';
 
 class PatientProvider extends ChangeNotifier {
   List<Patient> patients = [];
+  //Patient patient = Patient(id: "", firstName: "", lastName: "", address: "", dateOfBirth: DateTime.now(), gender: "", department: "", doctor: "", additionalNotes: "", condition: "");
   
   Future<void> fetchPatients(Map<String, String> patientQueryParams) async {
     final url = Uri.parse('http://127.0.0.1:3000/patients')

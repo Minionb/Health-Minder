@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 enum Item { critical, bad, average, fine, good, all }
 
 class PatientList extends StatefulWidget {
-  
-  // final Function(Map<String, String>) setQueryParams;
 
   const PatientList();
 
@@ -171,7 +169,7 @@ class _PatientListState extends State<PatientList> {
             
             child: FutureBuilder(
           future: Provider.of<PatientProvider>(context, listen: false)
-              .fetchPatients(patientQueryParams),//fetchPatients(patientQueryParams),
+              .fetchPatients(patientQueryParams),
           builder: (cntx, snapshot) => snapshot.connectionState ==
                   ConnectionState.waiting
               ? const Center(
