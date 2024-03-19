@@ -7,7 +7,7 @@ import 'package:mapd722_project_group6/PatientProvider.dart';
 class PatientDetailWidget extends StatefulWidget {
   final String patientId;
 
-  PatientDetailWidget({required this.patientId});
+  const PatientDetailWidget({super.key, required this.patientId});
 
   @override
   State<StatefulWidget> createState() {
@@ -39,13 +39,13 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Details'),
+        title: const Text('Patient Details'),
       ),
       body: DefaultTabController(
         length: 2,
         child: Column(
           children: [
-            TabBar(
+            const TabBar(
               tabs: [
                 Tab(text: 'Patient Information'),
                 Tab(text: 'Clinical Data'),
@@ -63,77 +63,77 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
                         return Material(
                           child: Center(
                             child: ListView(
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               children: [
                                 ListTile(
-                                  title: Text(
+                                  title: const Text(
                                     'Name',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     '${patientData.firstName} ${patientData.lastName}',
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
                                 ListTile(
-                                  title: Text(
+                                  title: const Text(
                                     'Address',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     patientData.address,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
                                 ListTile(
-                                  title: Text(
+                                  title: const Text(
                                     'Date of Birth',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     patientData.getFormattedDateOfBirth(),
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
                                 ListTile(
-                                  title: Text(
+                                  title: const Text(
                                     'Gender',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     patientData.gender,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
                                 ListTile(
-                                  title: Text(
+                                  title: const Text(
                                     'Department',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     patientData.department,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
                                 ListTile(
-                                  title: Text(
+                                  title: const Text(
                                     'Doctor',
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
                                     patientData.doctor,
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
                                 if (patientData.additionalNotes != '')
                                   ListTile(
-                                    title: Text(
+                                    title: const Text(
                                       'Additional Notes',
                                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Text(
                                       patientData.additionalNotes!,
-                                      style: TextStyle(fontSize: 18),
+                                      style: const TextStyle(fontSize: 18),
                                     ),
                                   ),
                               ],
@@ -141,10 +141,9 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
                           ),
                         );
                       } else if (snapshot.hasError) {
-                        print(snapshot);
-                        return Text('Failed to fetch patient data');
+                        return const Text('Failed to fetch patient data');
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
                     },
                   ),
@@ -157,20 +156,13 @@ class PatientDetailWidgetState extends State<PatientDetailWidget> {
                         return ClinicalDataScreen(patientId: widget.patientId, clinicalData: clinicalDataList);
                       }
                       else if (snapshot.hasError) {
-                        print(snapshot);
-                        return Text('Failed to fetch patient clinical data');
+                        return const Text('Failed to fetch patient clinical data');
                       }
                       else {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
                     }
                   )
-                  // Center(
-                  //   child: Text(
-                  //     'Clinical Data',
-                  //     style: TextStyle(fontSize: 18),
-                  //   ),
-                  // ),
                 ],
               ),
             ),

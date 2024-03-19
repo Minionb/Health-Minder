@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/EditPatientScreen.dart';
 import 'package:mapd722_project_group6/MainDrawer.dart';
-import 'package:mapd722_project_group6/Patient.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 import 'package:mapd722_project_group6/PatientWidget.dart';
@@ -11,9 +10,9 @@ enum Item { critical, bad, average, fine, good, all }
 
 class PatientList extends StatefulWidget {
   
-  final Function(Map<String, String>) setQueryParams;
+  // final Function(Map<String, String>) setQueryParams;
 
-  const PatientList(this.setQueryParams);
+  const PatientList();
 
   @override
   _PatientListState createState() => _PatientListState();
@@ -52,7 +51,8 @@ class _PatientListState extends State<PatientList> {
               child: const Text('Delete'),
               onPressed: () {
                 Navigator.of(context).pop();
-                //deletePatient(patientId);
+                Provider.of<PatientProvider>(context, listen: false)
+                .deletePatient(patientId);
               },
             ),
           ],
@@ -114,11 +114,7 @@ class _PatientListState extends State<PatientList> {
                         'first_name': firstName,
                         'last_name': lastName,
                       };
-                      // create a copy of the patients list
-                      // filter it 
-                      // 
                     });
-                    widget.setQueryParams(patientQueryParams);
                   },
                 ),
                 PopupMenuButton<Item>(
@@ -140,7 +136,6 @@ class _PatientListState extends State<PatientList> {
                       }
                     });
                     print('Filter clicked with condition: $itemString');
-                    widget.setQueryParams(patientQueryParams);
                   },
                   itemBuilder: (BuildContext context) => <PopupMenuEntry<Item>>[
                     const PopupMenuItem<Item>(
@@ -195,14 +190,14 @@ class _PatientListState extends State<PatientList> {
                 return PatientWidget(
                   patient: PatientProvider.patients[index],
                   onEdit: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => EditPatient(
-                    //       patientID: PatientProvider.patients[index].id,
-                    //     ),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditPatient(
+                          patientID: PatientProvider.patients[index].id,
+                        ),
+                      ),
+                    );
                   },
                   onDelete: () {
                     showDeleteConfirmationDialog(PatientProvider.patients[index].id);
