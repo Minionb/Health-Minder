@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/ClinicalData.dart';
+import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 
 enum Item { edit, delete }
 
-class ClinicalDataWidget extends StatelessWidget {
+class ClinicalDataWidget extends StatefulWidget {
   final ClinicalData clinicalData;
 
   const ClinicalDataWidget({
@@ -11,13 +12,18 @@ class ClinicalDataWidget extends StatelessWidget {
     required this.clinicalData
   }) : super(key: key);
 
+  @override
+  State<ClinicalDataWidget> createState() => _ClinicalDataWidget();
+}
+class _ClinicalDataWidget extends State<ClinicalDataWidget> {
 
   @override
   Widget build(BuildContext context) {
     Color conditionColor;
     Color textColor;
+    Item? selectedItem;
 
-    switch (clinicalData.condition) {
+    switch (widget.clinicalData.condition) {
       case 'critical':
         conditionColor = const Color(0xFF9A1B22);
         textColor = Colors.white;
@@ -58,28 +64,67 @@ class ClinicalDataWidget extends StatelessWidget {
             SizedBox(height: 8.0),
             Row(
               children: [
-                Text(clinicalData.dataType, style: TextStyle(
+                Text(widget.clinicalData.dataType, style: TextStyle(
                   fontSize: 25,
                   fontWeight:FontWeight.bold, 
                   color: textColor,// Set the text color to white for better visibility
                 )),
                 const Expanded(child: Spacer()),
-                // IconButton(
-                //   onPressed: () {
-                    
-                //   }, 
-                //   icon: const Icon(Icons.menu)
-                // )
-                PopupMenu(color: textColor,)
+                PopupMenuButton<Item>(
+                  icon: Icon(Icons.menu, color: textColor,),
+                  initialValue: selectedItem,
+                  onSelected: (Item item) {
+                    setState(() {
+                      selectedItem = item;
+                    });
+                    if (selectedItem == Item.delete) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Delete Clinical Data?"),
+                            content: const Text("Are you sure?"),                                    
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }, 
+                                child: const Text("Cancel")
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  deleteClinicalDataById(widget.clinicalData.id);
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PatientDetailWidget(patientId: widget.clinicalData.patientID)));
+                                }, 
+                                child: const Text("DELETE")
+                              )
+                            ],
+                          );
+                        }
+                      );
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<Item>>[
+                    const PopupMenuItem<Item>(
+                      value: Item.edit,
+                      child: Text('edit')
+                    ),
+                    const PopupMenuItem<Item>(
+                      value: Item.delete,
+                      child: Text('DELETE', style: TextStyle(color: Colors.red),)
+                    ),
+                  ]
+                )
               ],
             ),
             SizedBox(height: 8.0),
-            Text(clinicalData.readingValue, style: TextStyle(
+            Text(widget.clinicalData.readingValue, style: TextStyle(
               fontSize: 18,
               fontWeight:FontWeight.bold, 
               color: textColor,// Set the text color to white for better visibility
             ),),
-            Text(clinicalData.getFormattedDateOfRecording(), style: TextStyle(
+            Text(widget.clinicalData.getFormattedDateOfRecording(), style: TextStyle(
               fontSize: 18,
               fontWeight:FontWeight.bold, 
               color: textColor,// Set the text color to white for better visibility
@@ -87,41 +132,6 @@ class ClinicalDataWidget extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class PopupMenu extends StatefulWidget {
-  final Color color;
-  const PopupMenu({super.key, required this.color});
-
-  @override
-  State<PopupMenu> createState() => _Popupmenu();
-}
-
-class _Popupmenu extends State<PopupMenu> {
-  Item? selectedItem;
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton<Item>(
-      icon: Icon(Icons.menu, color: widget.color,),
-      initialValue: selectedItem,
-      onSelected: (Item item) {
-        setState(() {
-          selectedItem = item;
-        });
-      },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<Item>>[
-        const PopupMenuItem<Item>(
-          value: Item.edit,
-          child: Text('edit')
-        ),
-        const PopupMenuItem<Item>(
-          value: Item.delete,
-          child: Text('DELETE', style: TextStyle(color: Colors.red),)
-        ),
-      ]
     );
   }
 }
