@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/EditPatientScreen.dart';
 import 'package:mapd722_project_group6/MainDrawer.dart';
+import 'package:mapd722_project_group6/Patient.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 import 'package:mapd722_project_group6/PatientWidget.dart';
+import 'package:provider/provider.dart';
 
 enum Item { critical, bad, average, fine, good, all }
 
 class PatientList extends StatefulWidget {
-  final List<Patient> patients;
+  
   final Function(Map<String, String>) setQueryParams;
 
-  const PatientList(this.patients,this.setQueryParams);
+  const PatientList(this.setQueryParams);
 
   @override
   _PatientListState createState() => _PatientListState();
@@ -50,7 +52,7 @@ class _PatientListState extends State<PatientList> {
               child: const Text('Delete'),
               onPressed: () {
                 Navigator.of(context).pop();
-                deletePatient(patientId);
+                //deletePatient(patientId);
               },
             ),
           ],
@@ -112,6 +114,9 @@ class _PatientListState extends State<PatientList> {
                         'first_name': firstName,
                         'last_name': lastName,
                       };
+                      // create a copy of the patients list
+                      // filter it 
+                      // 
                     });
                     widget.setQueryParams(patientQueryParams);
                   },
@@ -168,30 +173,46 @@ class _PatientListState extends State<PatientList> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: widget.patients.length,
+            
+            child: FutureBuilder(
+          future: Provider.of<PatientProvider>(context, listen: false)
+              .fetchPatients(patientQueryParams),//fetchPatients(patientQueryParams),
+          builder: (cntx, snapshot) => snapshot.connectionState ==
+                  ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Consumer<PatientProvider>(
+                child: const Center(
+                    child: Text('No Patients Yet'),
+                  ),
+                  builder: (context, PatientProvider, child) =>
+                      PatientProvider.patients.isEmpty
+                          ? child!
+                          : ListView.builder(
+              itemCount: PatientProvider.patients.length,
               itemBuilder: (context, index) {
                 return PatientWidget(
-                  patient: widget.patients[index],
+                  patient: PatientProvider.patients[index],
                   onEdit: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditPatient(
-                          patientID: widget.patients[index].id,
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => EditPatient(
+                    //       patientID: PatientProvider.patients[index].id,
+                    //     ),
+                    //   ),
+                    // );
                   },
                   onDelete: () {
-                    showDeleteConfirmationDialog(widget.patients[index].id);
+                    showDeleteConfirmationDialog(PatientProvider.patients[index].id);
                   },
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PatientDetailWidget(
-                          patientId: widget.patients[index].id,
+                          patientId: PatientProvider.patients[index].id,
                         ),
                       ),
                     );
@@ -199,7 +220,9 @@ class _PatientListState extends State<PatientList> {
                 );
               },
             ),
-          ),
+          )
+        )
+      ),
         ],
       ),
     );
