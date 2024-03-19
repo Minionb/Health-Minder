@@ -5,7 +5,8 @@ import 'package:mapd722_project_group6/Patient.dart';
 
 class PatientProvider extends ChangeNotifier {
   List<Patient> patients = [];
-  //Patient patient = Patient(id: "", firstName: "", lastName: "", address: "", dateOfBirth: DateTime.now(), gender: "", department: "", doctor: "", additionalNotes: "", condition: "");
+  
+  Patient patient = Patient(id: "", firstName: "", lastName: "", address: "", dateOfBirth: DateTime.now(), gender: "", department: "", doctor: "", additionalNotes: "", condition: "");
   
   Future<void> fetchPatients(Map<String, String> patientQueryParams) async {
     final url = Uri.parse('http://127.0.0.1:3000/patients')
@@ -21,6 +22,17 @@ class PatientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> fetchPatientById(String id) async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:3000/patients/$id'));
+
+    if (response.statusCode == 200) {
+      final dynamic data = json.decode(response.body);
+      patient = Patient.fromJson(data);
+      notifyListeners();
+    } else {
+      throw Exception('Failed to fetch patient');
+    }
+  }
 
 
   Future<void> createPatient(String firstName, String lastName, String address, String dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
@@ -84,19 +96,6 @@ class PatientProvider extends ChangeNotifier {
     }
   }
 }
-
-
-  Future<Patient> fetchPatientById(String id) async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:3000/patients/$id'));
-
-    if (response.statusCode == 200) {
-      final dynamic data = json.decode(response.body);
-      final Patient patient = Patient.fromJson(data);
-      return patient;
-    } else {
-      throw Exception('Failed to fetch patient');
-    }
-  }
 
 
 

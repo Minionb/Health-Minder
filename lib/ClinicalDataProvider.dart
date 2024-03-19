@@ -1,4 +1,4 @@
-import 'dart:js';
+
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -66,9 +66,9 @@ class ClinicalDataProvider extends ChangeNotifier{
       clinicalDataList = fetchClinicalDataByPatient(patientID) as List<ClinicalData>;
       notifyListeners();
 
-      final patientProvider = Provider.of<PatientProvider>(context as BuildContext, listen: false);
-      await patientProvider.fetchPatients({});
-      patientProvider.notifyListeners();
+      // final patientProvider = Provider.of<PatientProvider>(context as BuildContext, listen: false);
+      // await patientProvider.fetchPatients({});
+      // patientProvider.notifyListeners();
     }
     else {
       print('Request failed with status: ${response.statusCode}');
