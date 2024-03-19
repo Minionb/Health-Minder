@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/ClinicalData.dart';
+import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
+import 'package:provider/provider.dart';
 
 const List<String> readingType = <String>['Blood Pressure', 'Respiratory Rate', 'Blood Oxygen Level', 'Heartbeat Rate'];
 
@@ -117,7 +119,9 @@ class _NewClinicalData extends State<NewClinicalData> {
                           ),
                           TextButton(
                             onPressed: () {
-                              createClinicalData(
+                              Provider.of<ClinicalDataProvider>(context1, listen: false)
+                              .createClinicalData(
+                                // context1,
                                 widget.patientId, 
                                 "${selectedDate.toLocal()}".split(' ')[0], 
                                 selectedReadingType,

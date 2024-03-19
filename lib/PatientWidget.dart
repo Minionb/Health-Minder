@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mapd722_project_group6/PatientProvider.dart';
+import 'package:mapd722_project_group6/Patient.dart';
 
 class PatientWidget extends StatelessWidget {
   final Patient patient;
@@ -67,11 +67,11 @@ class PatientWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: Icon(Icons.edit),
+                icon: const Icon(Icons.edit),
                 onPressed: onEdit,
               ),
               IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: onDelete,
               ),
             ],
