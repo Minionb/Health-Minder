@@ -64,7 +64,17 @@ class _PatientListState extends State<PatientList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Health Minder"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+             Provider.of<PatientProvider>(context, listen: false)
+              .fetchPatients(patientQueryParams);
+            },
+          ),
+        ],
       ),
+      
       drawer: MainDrawer(),
       body: Column(
         children: [
