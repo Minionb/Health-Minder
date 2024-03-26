@@ -5,11 +5,14 @@ import 'package:mapd722_project_group6/Patient.dart';
 
 class PatientProvider extends ChangeNotifier {
   List<Patient> patients = [];
+
+     // String apiURL = "http://127.0.0.1:3000";
+   String apiURL = "https://mapd713-project-group7.onrender.com";
   
   Patient patient = Patient(id: "", firstName: "", lastName: "", address: "", dateOfBirth: DateTime.now(), gender: "", department: "", doctor: "", additionalNotes: "", condition: "");
   
   Future<void> fetchPatients(Map<String, String> patientQueryParams) async {
-    final url = Uri.parse('http://127.0.0.1:3000/patients')
+    final url = Uri.parse('$apiURL/patients')
         .replace(queryParameters: patientQueryParams);
 
     final response = await http.get(url);
@@ -23,7 +26,7 @@ class PatientProvider extends ChangeNotifier {
   }
 
   Future<void> fetchPatientById(String id) async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:3000/patients/$id'));
+    final response = await http.get(Uri.parse('$apiURL/patients/$id'));
 
     if (response.statusCode == 200) {
       final dynamic data = json.decode(response.body);
@@ -36,7 +39,7 @@ class PatientProvider extends ChangeNotifier {
 
 
   Future<void> createPatient(String firstName, String lastName, String address, String dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
-    var url = Uri.parse('http://127.0.0.1:3000/patients');
+    var url = Uri.parse('$apiURL/patients');
 
     var response = await http.post(url, 
       body: {
@@ -63,7 +66,7 @@ class PatientProvider extends ChangeNotifier {
   }
 
   Future<void> deletePatient(String patientId) async {
-    final url = 'http://127.0.0.1:3000/patients/$patientId';
+    final url = '$apiURL/patients/$patientId';
     final response = await http.delete(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -79,7 +82,7 @@ class PatientProvider extends ChangeNotifier {
   } 
 
   Future<void> editPatient(String patientID, String updateBodyString) async {
-    final url = 'http://127.0.0.1:3000/patients/$patientID';
+    final url = '$apiURL/patients/$patientID';
     final response = await http.patch(
       Uri.parse(url),
       headers: {
