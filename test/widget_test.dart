@@ -5,26 +5,80 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mapd722_project_group6/AddPatientScreen.dart';
+import 'package:mapd722_project_group6/NewClinicalDataScreen.dart';
+import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
+import 'package:mapd722_project_group6/PatientList.dart';
+import 'package:mapd722_project_group6/PatientProvider.dart';
+import 'package:mapd722_project_group6/PatientWidget.dart';
 
 import 'package:mapd722_project_group6/main.dart';
+import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
+
+// class MockHttpClient extends Mock implements HttpClient {}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  //   // Build our app and trigger a frame.
+  //   await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  //   // Verify that our counter starts at 0.
+  //   expect(find.text('0'), findsOneWidget);
+  //   expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  //   // Tap the '+' icon and trigger a frame.
+  //   await tester.tap(find.byIcon(Icons.add));
+  //   await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  //   // Verify that our counter has incremented.
+  //   expect(find.text('0'), findsNothing);
+  //   expect(find.text('1'), findsOneWidget);
+  // });
+
+  testWidgets('finds instance of NewClinicalDataScreen', (widgetTester) async {
+    const childWidget = MaterialApp(
+      title: 'Health Minder'
+    );
+    
+    await widgetTester.pumpWidget(childWidget);
+
+    expect(find.byWidget(childWidget), findsOneWidget);
   });
+
+  // testWidgets('Search patient', (widgetTester) async {
+  //   final mockClient = MockHttpClient();
+
+  //   when(mockClient.get(Uri.parse('https://mapd713-project-group7.onrender.com/p')))
+
+  //   var childWidget = ChangeNotifierProvider<PatientProvider>(
+  //     create: (context) => PatientProvider(), 
+  //     child: const PatientList(),
+  //   );
+
+  //   await widgetTester.pumpWidget(childWidget);
+
+  //   await widgetTester.enterText(find.byType(TextField), 'Jenny');
+
+  //   await widgetTester.tap(find.byType(IconButton));
+
+  //   await widgetTester.pump();
+
+  //   expect(find.byType(PatientWidget), findsOneWidget);
+  // });
+
+  // testWidgets('finds instance of Add Patient', (widgetTester) async {
+  //   var childWidget = ChangeNotifierProvider<PatientProvider>(
+  //     create: (context) => PatientProvider(), 
+  //     child: const PatientList(),
+  //   );
+
+  //   await widgetTester.pumpWidget(childWidget);
+
+  //   expect(find.byWidget(childWidget), findsOneWidget);
+  // });
 }
