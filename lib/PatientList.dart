@@ -156,7 +156,7 @@ class _PatientListState extends State<PatientList> {
                     ),
                     const PopupMenuItem<Item>(
                       value: Item.average,
-                      child: Text('Average', style: TextStyle(color: Color(0xFFF9E802)),)
+                      child: Text('Average', style: TextStyle(color: Color.fromARGB(255, 255, 200, 0)),)
                     ),
                     const PopupMenuItem<Item>(
                       value: Item.fine,
