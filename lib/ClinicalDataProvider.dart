@@ -9,8 +9,12 @@ import 'package:provider/provider.dart';
 class ClinicalDataProvider extends ChangeNotifier{
    List<ClinicalData> clinicalDataList = [];
 
+   // String apiURL = "http://127.0.0.1:3000";
+   String apiURL = "https://mapd713-project-group7.onrender.com";
+
+
   Future<void> fetchClinicalDataByPatient(String id) async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:3000/patients/$id/testdata'));
+    final response = await http.get(Uri.parse('$apiURL/patients/$id/testdata'));
 
     if (response.statusCode == 200) {
         clinicalDataList = ClinicalData.parseClinicalData(response.body);
@@ -27,7 +31,7 @@ class ClinicalDataProvider extends ChangeNotifier{
     String dataType, 
     String readingValue
     ) async {
-    var url = Uri.parse('http://127.0.0.1:3000/patients/testdata');
+    var url = Uri.parse('$apiURL/patients/testdata');
 
     var response = await http.post(url,
       body: {
@@ -57,7 +61,7 @@ class ClinicalDataProvider extends ChangeNotifier{
   }
 
   Future<void> deleteClinicalDataById(String clinicalDataId, String patientID) async {
-    var url = Uri.parse('http://127.0.0.1:3000/patients/testdata/$clinicalDataId');
+    var url = Uri.parse('$apiURL/patients/testdata/$clinicalDataId');
 
     var response = await http.delete(url);
 
