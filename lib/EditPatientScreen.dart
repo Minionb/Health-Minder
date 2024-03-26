@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/MainDrawer.dart';
 import 'package:mapd722_project_group6/PatientProvider.dart';
+import 'package:provider/provider.dart';
 
 const List<String> genderOpsList = <String>['Male', 'Female', 'Other'];
 
@@ -171,7 +172,8 @@ class _EditPatient extends State<EditPatient> {
               print(updateBodyString);
 
               // Call the editPatient function with the updateBodyString
-              editPatient(widget.patientID, updateBodyString);
+              Provider.of<PatientProvider>(context, listen: false)
+                .editPatient(widget.patientID, updateBodyString);
 
                 showDialog(
                   context: context,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/ClinicalData.dart';
+import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
+import 'package:provider/provider.dart';
 
 enum Item { edit, delete }
 
@@ -93,7 +95,8 @@ class _ClinicalDataWidget extends State<ClinicalDataWidget> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  deleteClinicalDataById(widget.clinicalData.id);
+                                  Provider.of<ClinicalDataProvider>(context, listen: false)
+                                  .deleteClinicalDataById(widget.clinicalData.id, widget.clinicalData.patientID);
                                   Navigator.pop(context);
                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PatientDetailWidget(patientId: widget.clinicalData.patientID)));
                                 }, 
