@@ -7,7 +7,7 @@ class PatientProvider extends ChangeNotifier {
   List<Patient> patients = [];
 
      // String apiURL = "http://127.0.0.1:3000";
-   String apiURL = "https://mapd713-project-group7.onrender.com";
+  String apiURL = "https://mapd713-project-group7.onrender.com";
   
   Patient patient = Patient(id: "", firstName: "", lastName: "", address: "", dateOfBirth: DateTime.now(), gender: "", department: "", doctor: "", additionalNotes: "", condition: "");
   
