@@ -64,7 +64,17 @@ class _PatientListState extends State<PatientList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Health Minder"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+             Provider.of<PatientProvider>(context, listen: false)
+              .fetchPatients(patientQueryParams);
+            },
+          ),
+        ],
       ),
+      
       drawer: MainDrawer(),
       body: Column(
         children: [
@@ -146,7 +156,7 @@ class _PatientListState extends State<PatientList> {
                     ),
                     const PopupMenuItem<Item>(
                       value: Item.average,
-                      child: Text('Average', style: TextStyle(color: Color(0xFFF9E802)),)
+                      child: Text('Average', style: TextStyle(color: Color.fromARGB(255, 255, 200, 0)),)
                     ),
                     const PopupMenuItem<Item>(
                       value: Item.fine,
