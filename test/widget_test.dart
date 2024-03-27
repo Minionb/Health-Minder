@@ -23,22 +23,6 @@ import 'package:provider/provider.dart';
 // class MockHttpClient extends Mock implements HttpClient {}
 
 void main() {
-  // testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-  //   // Build our app and trigger a frame.
-  //   await tester.pumpWidget(const MyApp());
-
-  //   // Verify that our counter starts at 0.
-  //   expect(find.text('0'), findsOneWidget);
-  //   expect(find.text('1'), findsNothing);
-
-  //   // Tap the '+' icon and trigger a frame.
-  //   await tester.tap(find.byIcon(Icons.add));
-  //   await tester.pump();
-
-  //   // Verify that our counter has incremented.
-  //   expect(find.text('0'), findsNothing);
-  //   expect(find.text('1'), findsOneWidget);
-  // });
 
   testWidgets('finds instance of NewClinicalDataScreen', (widgetTester) async {
     const childWidget = MaterialApp(
@@ -56,6 +40,14 @@ void main() {
     var textField = find.byType(TextField);
 
     expect(textField, findsNWidgets(6));
+  });
+
+  testWidgets('find textfields in NewClinicalData', (widgetTester) async {
+    await widgetTester.pumpWidget(MaterialApp(home: NewClinicalData(patientId: '653bff257990b371f8120443')));
+
+    var textField = find.byType(TextField);
+
+    expect(textField, findsNWidgets(2));
   });
 
   // testWidgets('Search patient', (widgetTester) async {
