@@ -22,6 +22,7 @@ class _AddPatient extends State<AddPatient> {
   final department = TextEditingController();
   final doctor = TextEditingController();
   final addNotes = TextEditingController();
+  bool inputVal = true;
 
   late Patient newPatient;
 
@@ -36,6 +37,12 @@ class _AddPatient extends State<AddPatient> {
         selectedDate = picked;
       });
     }
+  }
+
+  void handleBool(bool input) {
+    setState(() {
+      inputVal = input;
+    });
   }
 
   @override
@@ -116,8 +123,11 @@ class _AddPatient extends State<AddPatient> {
             TextField(
               controller: addNotes,
             ),
+            Text("One or more of the fields is empty!", style: TextStyle(color: inputVal ? Colors.white : Colors.red),),
+            Spacer(),
             ElevatedButton(onPressed: () => {
               if (nameFirst.text != "" && nameLast.text != "" && address.text != "" && gender != "" && department.text != "" && doctor.text != "" && addNotes.text != "") {
+                handleBool(true),
                 Provider.of<PatientProvider>(context, listen: false)
                 .createPatient(
                   nameFirst.text,
@@ -143,9 +153,12 @@ class _AddPatient extends State<AddPatient> {
                           },
                         ),
                       ],
-                   );
+                    );
                   },
                 )    
+              }
+              else {
+                handleBool(false),
               }
             }, child: Text("Submit")),
           ]

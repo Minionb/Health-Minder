@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/ClinicalData.dart';
 import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
+import 'package:mapd722_project_group6/EditClinicalDataScreen.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -106,6 +107,9 @@ class _ClinicalDataWidget extends State<ClinicalDataWidget> {
                           );
                         }
                       );
+                    }
+                    else if (selectedItem == Item.edit) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditClinicalData(dataID: widget.clinicalData.id, patientID: widget.clinicalData.patientID,)));
                     }
                   },
                   itemBuilder: (BuildContext context) => <PopupMenuEntry<Item>>[
