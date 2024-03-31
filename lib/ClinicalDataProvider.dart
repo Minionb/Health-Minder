@@ -60,6 +60,32 @@ class ClinicalDataProvider extends ChangeNotifier{
     }
   }
 
+  Future<void> editClinicalData(String clinicalDataId, String patientID, String updateBodyString) async {
+    var url = Uri.parse('$apiURL/patients/testdata/$clinicalDataId');
+    final response = await http.patch(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: updateBodyString,
+    );
+
+    if (response.statusCode == 200) {
+      // Request successful, parse the response
+      var data = response.body;
+      clinicalDataList = fetchClinicalDataByPatient(patientID) as List<ClinicalData>;
+      notifyListeners();
+
+      // final patientProvider = Provider.of<PatientProvider>(context as BuildContext , listen: false);
+      // await patientProvider.fetchPatients({});
+      // patientProvider.notifyListeners();
+      print(data);
+    } else {
+      // Request failed, handle the error
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
   Future<void> deleteClinicalDataById(String clinicalDataId, String patientID) async {
     var url = Uri.parse('$apiURL/patients/testdata/$clinicalDataId');
 
