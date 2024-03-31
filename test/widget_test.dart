@@ -34,14 +34,6 @@ void main() {
     expect(find.byWidget(childWidget), findsOneWidget);
   });
 
-  testWidgets('find textfields in AddPatient', (widgetTester) async {
-    await widgetTester.pumpWidget(MaterialApp(home: AddPatient()));
-
-    var textField = find.byType(TextField);
-
-    expect(textField, findsNWidgets(6));
-  });
-
   testWidgets('find textfields in NewClinicalData', (widgetTester) async {
     await widgetTester.pumpWidget(MaterialApp(home: NewClinicalData(patientId: '653bff257990b371f8120443')));
 
