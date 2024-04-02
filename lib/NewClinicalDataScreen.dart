@@ -3,6 +3,7 @@ import 'package:mapd722_project_group6/ClinicalData.dart';
 import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 const List<String> readingType = <String>['Blood Pressure', 'Respiratory Rate', 'Blood Oxygen Level', 'Heartbeat Rate'];
 
@@ -19,6 +20,8 @@ class _NewClinicalData extends State<NewClinicalData> {
   String selectedReadingType = "";
   final _readingValueCrtl = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  String hint = "x";
+  String typeString = "";
   bool inputVal = true;
 
   late ClinicalData newClinicalData;
@@ -39,6 +42,27 @@ class _NewClinicalData extends State<NewClinicalData> {
   void handleDropdownValueChanged(String newValue) {
     setState(() {
       selectedReadingType = newValue;
+      // if (newValue == 'Blood Pressure') {
+      //   hint = "x/y";
+      // }
+      switch (newValue) {
+        case 'Blood Pressure':
+          hint = "x/y";
+          typeString = " mmHg";
+          break;
+        case 'Respiratory Rate':
+          hint = "x";
+          typeString = " /min";
+          break;
+        case 'Blood Oxygen Level':
+          hint = "x";
+          typeString = " %";
+          break;
+        case 'Heartbeat Rate':
+          hint = "x";
+          typeString = " /min";
+          break;
+      }
     });
   }
 
@@ -68,18 +92,29 @@ class _NewClinicalData extends State<NewClinicalData> {
                 ],
               ),
             ),
-            // Center(
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       const Text("Reading:"),
-            //       TextField(controller: _readingValueCrtl,)
-            //     ],
-            //   ),
-            // ),
             Spacer(),
             const Text("Reading:"),
-            TextField(controller: _readingValueCrtl,),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 1),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(controller: _readingValueCrtl, 
+                      decoration: InputDecoration.collapsed(hintText: hint),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9/.]')),
+                      ],
+                    ),
+                  ),
+                  Text(typeString)
+                ],
+              ),
+            ),
+            const Divider(
+              color: Colors.black,
+              height: 1,
+              thickness: 1,
+            ),
             Spacer(),
             Center(
               child: Row(

@@ -42,6 +42,14 @@ void main() {
     expect(textField, findsNWidgets(2));
   });
 
+  // testWidgets('find textfields in AddPatient', (widgetTester) async {
+  //   await widgetTester.pumpWidget(MaterialApp(home: AddPatient()));
+
+  //   var textField = find.byType(TextField);
+
+  //   expect(textField, findsNWidgets(6));
+  // });
+
   // testWidgets('Search patient', (widgetTester) async {
   //   final mockClient = MockHttpClient();
 
