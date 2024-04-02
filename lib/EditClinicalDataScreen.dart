@@ -5,6 +5,7 @@ import 'package:mapd722_project_group6/ClinicalDataProvider.dart';
 import 'package:mapd722_project_group6/ClinicalData.dart';
 import 'package:provider/provider.dart';
 import 'package:mapd722_project_group6/PatientDetailsWidget.dart';
+import 'package:flutter/services.dart';
 
 const List<String> readingType = <String>['Blood Pressure', 'Respiratory Rate', 'Blood Oxygen Level', 'Heartbeat Rate'];
 
@@ -21,6 +22,7 @@ class _EditClinicalDataState extends State<EditClinicalData> {
   String selectedReadingType = "";
   final _readingValueCrtl = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  String hint = "x";
   bool inputVal = true;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -39,6 +41,9 @@ class _EditClinicalDataState extends State<EditClinicalData> {
   void handleDropdownValueChanged(String newValue) {
     setState(() {
       selectedReadingType = newValue;
+      if (newValue == 'Blood Pressure') {
+        hint = "x/y";
+      }
     });
   }
 
@@ -70,7 +75,17 @@ class _EditClinicalDataState extends State<EditClinicalData> {
             ),
             Spacer(),
             const Text("Reading:"),
-            TextField(controller: _readingValueCrtl,),
+            TextField(controller: _readingValueCrtl, 
+              decoration: new InputDecoration.collapsed(hintText: hint,), 
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9/.]')),
+              ],
+            ),
+            const Divider(
+              color: Colors.black,
+              height: 1,
+              thickness: 1,
+            ),
             Spacer(),
             Center(
               child: Row(
