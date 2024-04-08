@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mapd722_project_group6/MainDrawer.dart';
 import 'package:mapd722_project_group6/Patient.dart';
@@ -45,12 +47,27 @@ class _AddPatient extends State<AddPatient> {
     });
   }
 
+    Future showAlert(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (cnx) => AlertDialog(
+                title: const Text('Duplicated Patient!!!'),
+                content: const Text("This patient is already in your Patient List!!"),
+                actions: [
+                  ElevatedButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                       Navigator.of(context).pushReplacementNamed('/AddPatient');
+                      })
+                ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Health Minder")),
+      appBar: AppBar(title: const Text("Health Minder")),
       drawer: MainDrawer(),
-      body: Padding(padding: EdgeInsets.all(20),
+      body: Padding(padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
             const Center(
@@ -63,15 +80,15 @@ class _AddPatient extends State<AddPatient> {
               ),
             ),
             const SizedBox(height: 10),
-            Text("First Name:"),
+            const Text("First Name:"),
             TextField(
               controller: nameFirst,
             ),
-            Text("Last Name:"),
+            const Text("Last Name:"),
             TextField(
               controller: nameLast,
             ),
-            Text("Address:"),
+            const Text("Address:"),
             TextField(
               controller: address,
             ),
@@ -79,10 +96,9 @@ class _AddPatient extends State<AddPatient> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text("Date of Birth:"),
-                  Spacer(),
+                  const Text("Date of Birth:"),
+                  const Spacer(),
                   Text("${selectedDate.toLocal()}".split(' ')[0]),
-                  
                   const SizedBox(height: 20.0,),
                   IconButton(
                     onPressed: () => _selectDate(context), 
@@ -95,8 +111,8 @@ class _AddPatient extends State<AddPatient> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text("Gender:"),
-                  Spacer(),
+                  const Text("Gender:"),
+                  const Spacer(),
                   DropdownMenu<String>(
                     initialSelection: "Not Selected",
                     onSelected: (String? value) {
@@ -111,56 +127,73 @@ class _AddPatient extends State<AddPatient> {
                 ],
               ),
             ),
-            Text("Department:"),
+            const Text("Department:"),
             TextField(
               controller: department,
             ),
-            Text("Doctor"),
+            const Text("Doctor"),
             TextField(
               controller: doctor,
             ),
-            Text("Additional Notes:"),
+            const Text("Additional Notes:"),
             TextField(
               controller: addNotes,
             ),
             Text("One or more of the fields is empty!", style: TextStyle(color: inputVal ? Colors.white : Colors.red),),
-            Spacer(),
-            ElevatedButton(onPressed: () => {
-              if (nameFirst.text != "" && nameLast.text != "" && address.text != "" && gender != "" && department.text != "" && doctor.text != "" && addNotes.text != "") {
-                handleBool(true),
-                Provider.of<PatientProvider>(context, listen: false)
-                .createPatient(
-                  nameFirst.text,
-                  nameLast.text,
-                  address.text,
-                  "${selectedDate.toLocal()}".split(' ')[0],
-                  gender,
-                  department.text,
-                  doctor.text,
-                  addNotes.text
-                ),
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Success'),
-                      content: Text('Patient created successfully.'),
-                      actions: [
-                        TextButton(
-                          child: Text('OK'),
-                          onPressed: () {
-                            Navigator.of(context).pushReplacementNamed('/');
-                          },
-                        ),
-                      ],
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () async {
+                if (nameFirst.text != "" &&
+                    nameLast.text != "" &&
+                    address.text != "" &&
+                    gender != "" &&
+                    department.text != "" &&
+                    doctor.text != "" &&
+                    addNotes.text != "") {
+                  handleBool(true);
+                  
+                  var added = await Provider.of<PatientProvider>(context, listen: false)
+                      .createPatient(
+                        nameFirst.text,
+                        nameLast.text,
+                        address.text,
+                        "${selectedDate.toLocal()}".split(' ')[0],
+                        gender,
+                        department.text,
+                        doctor.text,
+                        addNotes.text,
+                      );
+
+                      print(added);
+
+                  if (added == false) {
+                      showAlert(context);
+                  }
+                  else{
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Success'),
+                          content: const Text('Patient created successfully.'),
+                          actions: [
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pushReplacementNamed('/');
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     );
-                  },
-                )    
-              }
-              else {
-                handleBool(false),
-              }
-            }, child: Text("Submit")),
+                  }
+                } else {
+                  handleBool(false);
+                }
+              },
+              child: const Text("Submit"),
+            ),
           ]
         )
       )
