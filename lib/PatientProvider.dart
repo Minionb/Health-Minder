@@ -37,32 +37,60 @@ class PatientProvider extends ChangeNotifier {
     }
   }
 
+ 
+  Future<bool> isInDB(String firstName, String lastName) async {
+  var found = false;
+  
+  http.Response response = await http.get(
+    Uri.parse('$apiURL/patients'),
+  );
+  
+  if (response.statusCode == 200) {
+    var decodedData = Patient.parsePatients(response.body);
+    
+    found = decodedData.any((patient) =>
+        patient.firstName == firstName && patient.lastName == lastName);
+  } else {
+    throw Exception('Failed to fetch patients');
+  }
+  
+  return found;
+}
 
-  Future<void> createPatient(String firstName, String lastName, String address, String dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
+
+   Future<bool> createPatient(String firstName, String lastName, String address, String dateOfBirth, String gender, String department, String doctor, String additionalNotes) async {
     var url = Uri.parse('$apiURL/patients');
 
-    var response = await http.post(url, 
-      body: {
-        'first_name': firstName,
-        'last_name': lastName,
-        'address': address,
-        'date_of_birth': dateOfBirth,
-        'gender': gender,
-        'department': department,
-        'doctor': doctor,
-        'additional_notes': additionalNotes
-      }
-    );
+    var added = false;
+    var found = await isInDB(firstName,lastName);
+    print(found);
 
-    if (response.statusCode == 200) {
-      var data = response.body;
-      print(data);
-      patients = fetchPatients({}) as List<Patient>;
-      notifyListeners();
-    } else {
-      print('Request failed with status: ${response.statusCode}');
-      print(response.body);
+    if (!found) {
+      var response = await http.post(url, 
+        body: {
+          'first_name': firstName,
+          'last_name': lastName,
+          'address': address,
+          'date_of_birth': dateOfBirth,
+          'gender': gender,
+          'department': department,
+          'doctor': doctor,
+          'additional_notes': additionalNotes
+        }
+      );
+
+      if (response.statusCode == 201) {
+        added = true;
+        var data = response.body;
+        print(data);
+        // patients = fetchPatients({}) as List<Patient>;
+        notifyListeners();
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        
+      }
     }
+    return added;
   }
 
   Future<void> deletePatient(String patientId) async {
